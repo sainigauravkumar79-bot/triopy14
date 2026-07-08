@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Flame } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { useAuth } from './AuthProvider';
+import { supabase } from '../../lib/supabase';
+import { useAuth } from '../AuthProvider';
 
 export const StreakCounter: React.FC = () => {
   const { user } = useAuth();
