@@ -3,7 +3,7 @@ import { useAuth } from '../AuthProvider';
 import { supabase } from '../../lib/supabase';
 import {
   Dumbbell, Plus, Trash2, Search, Play, Check,
-  Clock, Flame, Brain, Activity, Yoga, Moon,
+  Clock, Flame, Brain, Activity, Moon,
   Sun, Wind, Heart, Music, Filter, Edit, X,
   AlertCircle, CheckCircle
 } from 'lucide-react';
@@ -515,4 +515,221 @@ export const ExerciseMeditationLibrary: React.FC = () => {
               <div className="text-sm text-gray-600 dark:text-gray-400">Currently: {selectedMeditation.name}</div>
               <button
                 onClick={stopMeditation}
-                className
+                className="mt-3 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold"
+              >
+                Stop Session
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Add Exercise / Meditation Modal */}
+      {isAdding && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-3xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-bold text-gray-900 dark:text-white">
+                Add {addType === 'exercise' ? 'Exercise' : 'Meditation'}
+              </h3>
+              <button
+                onClick={() => { setIsAdding(false); resetExerciseForm(); resetMeditationForm(); }}
+                className="p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="flex gap-2 mb-4">
+              <button
+                onClick={() => setAddType('exercise')}
+                className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                  addType === 'exercise'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                }`}
+              >
+                Exercise
+              </button>
+              <button
+                onClick={() => setAddType('meditation')}
+                className={`flex-1 px-3 py-2 rounded-xl text-xs font-bold transition-all ${
+                  addType === 'meditation'
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
+                }`}
+              >
+                Meditation
+              </button>
+            </div>
+
+            {addType === 'exercise' ? (
+              <form onSubmit={handleAddExercise} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Exercise name"
+                  value={exerciseName}
+                  onChange={(e) => setExerciseName(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  required
+                />
+                <select
+                  value={exerciseCategory}
+                  onChange={(e) => setExerciseCategory(e.target.value as typeof exerciseCategory)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                >
+                  <option value="cardio">Cardio</option>
+                  <option value="strength">Strength</option>
+                  <option value="yoga">Yoga</option>
+                  <option value="hiit">HIIT</option>
+                  <option value="flexibility">Flexibility</option>
+                </select>
+                <input
+                  type="text"
+                  placeholder="Muscle group"
+                  value={muscleGroup}
+                  onChange={(e) => setMuscleGroup(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    placeholder="Duration (min)"
+                    value={duration}
+                    onChange={(e) => setDuration(e.target.value)}
+                    className="w-1/2 p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Calories burned"
+                    value={caloriesBurn}
+                    onChange={(e) => setCaloriesBurn(e.target.value)}
+                    className="w-1/2 p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  />
+                </div>
+                <select
+                  value={difficulty}
+                  onChange={(e) => setDifficulty(e.target.value as typeof difficulty)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                </select>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add equipment"
+                    value={equipmentInput}
+                    onChange={(e) => setEquipmentInput(e.target.value)}
+                    className="flex-1 p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  />
+                  <button type="button" onClick={addEquipment} className="px-3 bg-gray-100 dark:bg-gray-700 rounded-xl text-xs font-bold">
+                    Add
+                  </button>
+                </div>
+                {equipment.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {equipment.map((item) => (
+                      <span
+                        key={item}
+                        onClick={() => removeEquipment(item)}
+                        className="px-2 py-1 bg-purple-100 dark:bg-purple-950/30 text-purple-700 dark:text-purple-400 rounded-full text-[10px] cursor-pointer"
+                      >
+                        {item} ✕
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <textarea
+                  placeholder="Instructions"
+                  value={instructions}
+                  onChange={(e) => setInstructions(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  rows={3}
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save Exercise'}
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleAddMeditation} className="space-y-3">
+                <input
+                  type="text"
+                  placeholder="Meditation name"
+                  value={meditationName}
+                  onChange={(e) => setMeditationName(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  required
+                />
+                <select
+                  value={meditationType}
+                  onChange={(e) => setMeditationType(e.target.value as typeof meditationType)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                >
+                  <option value="guided">Guided</option>
+                  <option value="breathing">Breathing</option>
+                  <option value="mantra">Mantra</option>
+                  <option value="mindfulness">Mindfulness</option>
+                  <option value="body_scan">Body Scan</option>
+                  <option value="loving_kindness">Loving Kindness</option>
+                </select>
+                <input
+                  type="number"
+                  placeholder="Duration (min)"
+                  value={meditationDuration}
+                  onChange={(e) => setMeditationDuration(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                />
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Add benefit"
+                    value={benefitsInput}
+                    onChange={(e) => setBenefitsInput(e.target.value)}
+                    className="flex-1 p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  />
+                  <button type="button" onClick={addBenefit} className="px-3 bg-gray-100 dark:bg-gray-700 rounded-xl text-xs font-bold">
+                    Add
+                  </button>
+                </div>
+                {meditationBenefits.length > 0 && (
+                  <div className="flex flex-wrap gap-1">
+                    {meditationBenefits.map((item) => (
+                      <span
+                        key={item}
+                        onClick={() => removeBenefit(item)}
+                        className="px-2 py-1 bg-indigo-100 dark:bg-indigo-950/30 text-indigo-700 dark:text-indigo-400 rounded-full text-[10px] cursor-pointer"
+                      >
+                        {item} ✕
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <textarea
+                  placeholder="Instructions"
+                  value={meditationInstructions}
+                  onChange={(e) => setMeditationInstructions(e.target.value)}
+                  className="w-full p-3 rounded-xl border dark:bg-gray-700 dark:border-gray-600 dark:text-white text-sm"
+                  rows={3}
+                />
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold disabled:opacity-50"
+                >
+                  {loading ? 'Saving...' : 'Save Meditation'}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+        
