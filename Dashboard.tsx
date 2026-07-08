@@ -7,7 +7,7 @@ import { HealthJournal } from './journal/HealthJournal';
 import { QuestTrends } from './gamification/QuestTrends';
 import { Badges } from './gamification/Badges';
 import { CommunityLeaderboard } from './gamification/CommunityLeaderboard';
-import { GoalTracker } from './goals/GoalTracker';
+import { GoalTracker } from './journal/GoalTracker';
 import { StreakCounter } from './gamification/StreakCounter';
 import { ChallengeRoom } from './gamification/ChallengeRoom';
 import { DailyHabits } from './habits/DailyHabits';
