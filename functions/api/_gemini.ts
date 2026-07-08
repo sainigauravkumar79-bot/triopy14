@@ -1,6 +1,3 @@
-// Shared helper used by all /functions/api/*.ts routes.
-// Files/folders starting with "_" are NOT treated as routes by Cloudflare Pages.
-
 export interface Env {
   GEMINI_API_KEY: string;
 }
