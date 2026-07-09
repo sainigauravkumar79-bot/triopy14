@@ -1,40 +1,38 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../components/AuthProvider';
+import { Habit } from '../types';
 
-interface Subscription {
-  is_premium: boolean;
-  subscription_type: string;
-  trial_start_date?: string;
-}
-
-export const useSubscription = () => {
+export const useHabits = () => {
   const { user } = useAuth();
-  const [subscription, setSubscription] = useState<Subscription | null>(null);
+  const [habits, setHabits] = useState<Habit[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
-      setSubscription(null);
       setLoading(false);
       return;
     }
 
-    const fetchSubscription = async () => {
+    const fetchHabits = async () => {
       const { data, error } = await supabase
-        .from('subscriptions')
+        .from('habits')
         .select('*')
-        .eq('user_id', user.id)
-        .single();
+        .eq('user_id', user.id);
 
       if (!error && data) {
-        setSubscription(data);
+        setHabits(data.map(h => ({
+          ...h,
+          userId: h.user_id,
+          createdAt: h.created_at,
+          completedDates: h.completed_dates || []
+        })));
       }
       setLoading(false);
     };
 
-    fetchSubscription();
+    fetchHabits();
   }, [user]);
 
-  return { subscription, loading };
+  return { habits, loading };
 };

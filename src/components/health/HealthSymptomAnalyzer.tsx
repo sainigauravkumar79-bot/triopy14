@@ -3,7 +3,7 @@ import { useAuth } from '../AuthProvider';
 import { supabase } from '../../lib/supabase';
 import {
   Stethoscope, AlertTriangle, CheckCircle, Clock,
-  Heart, Brain, Activity, Search, Send,
+  Heart, Brain, Lungs, Activity, Search, Send,
   Loader2, User, Calendar, Home, Phone, Video,
   X, AlertCircle
 } from 'lucide-react';

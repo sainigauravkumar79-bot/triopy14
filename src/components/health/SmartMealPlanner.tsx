@@ -258,6 +258,7 @@ export const SmartMealPlanner: React.FC = () => {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setMealImage(reader.result as string);
@@ -510,28 +511,4 @@ export const SmartMealPlanner: React.FC = () => {
                     className="hidden"
                     id="mealImage"
                   />
-                  <label htmlFor="mealImage" className="flex-1 p-3 border-2 border-dashed rounded-xl text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors text-sm text-gray-500 dark:text-gray-400">
-                    {mealImage ? 'Photo selected ✓' : 'Click to upload photo'}
-                  </label>
-                  {mealImage && (
-                    <img src={mealImage} alt="Preview" className="w-14 h-14 rounded-xl object-cover" />
-                  )}
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold disabled:opacity-50"
-              >
-                {loading ? 'Saving...' : 'Save Meal'}
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-  
-  
+                  <label htmlFor="mealImage" className="flex-1 p-3 border-2 border-dashed rounded-xl text-center cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-c
