@@ -35,10 +35,11 @@ export const SmartScheduler: React.FC = () => {
       });
       
       const dataResponse = await response.json();
+      if (!response.ok) throw new Error(dataResponse.error || `Server error ${response.status}`);
       setSchedule(dataResponse.schedule);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      alert('Failed to generate schedule.');
+      alert('Failed to generate schedule: ' + (error?.message || 'Unknown error'));
     } finally {
       setLoading(false);
     }
