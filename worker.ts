@@ -8,7 +8,7 @@ type Part = { text: string } | { inlineData: { mimeType: string; data: string } 
 async function callGemini(apiKey: string, parts: Part[], jsonMode = false): Promise<string> {
   if (!apiKey) throw new Error("GEMINI_API_KEY is not configured");
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${apiKey}`;
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
   const body: Record<string, unknown> = { contents: [{ parts }] };
   if (jsonMode) body.generationConfig = { responseMimeType: "application/json" };
 
