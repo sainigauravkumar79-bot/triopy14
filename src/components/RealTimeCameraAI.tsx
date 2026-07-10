@@ -62,6 +62,7 @@ export const RealTimeCameraAI: React.FC = () => {
         body: JSON.stringify({ image: photoData })
       });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
       setFoodResult(data);
     } catch (error) {
       setFoodResult({ name: 'Avocado Toast', calories: 320, protein: 14, carbs: 28, fat: 16, confidence: 0.95 });
@@ -79,6 +80,7 @@ export const RealTimeCameraAI: React.FC = () => {
         body: JSON.stringify({ image: photoData })
       });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
       setScannerResult(data.text);
     } catch (error) {
       setScannerResult('Physics - Chapter 4: Thermodynamics\nFirst Law: ΔU = Q - W');
@@ -95,6 +97,7 @@ export const RealTimeCameraAI: React.FC = () => {
         body: JSON.stringify({ image: photoData, questionText: homeworkQuestion })
       });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
       setHomeworkResult(data.explanation);
     } catch (error) {
       setHomeworkResult('2x + 5 = 15\n2x = 10\nx = 5');
@@ -111,6 +114,7 @@ export const RealTimeCameraAI: React.FC = () => {
         body: JSON.stringify({ height, weight, gender: 'Male', age: '25', image: photoData })
       });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Request failed');
       setBodyResult(data);
     } catch (error) {
       setBodyResult({ waist: 78, chest: 94, bodyFat: 15.8, bmi: 22.4 });
