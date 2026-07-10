@@ -152,23 +152,24 @@ export const RealTimeCameraAI: React.FC = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-4 min-h-[250px] flex flex-col items-center justify-center">
-          {cameraActive ? (
-            <div className="relative w-full">
-              <video ref={videoRef} className="w-full rounded-xl object-cover h-64 scale-x-[-1]" playsInline muted />
-              <button onClick={capturePhoto} className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 bg-red-600 text-white rounded-full shadow-lg">
-                <Camera size={20} />
-              </button>
-            </div>
-          ) : photoData ? (
-            <img src={photoData} className="max-h-64 rounded-xl shadow-md" alt="Capture" />
-          ) : (
-            <div className="text-center">
-              <Camera className="text-gray-300 mx-auto mb-3" size={48} />
-              <p className="text-xs text-gray-500 mb-4">Start camera or upload photo</p>
-              <button onClick={startCamera} className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">
-                Start Camera
-              </button>
-            </div>
+          <div className="relative w-full" style={{ display: cameraActive ? 'block' : 'none' }}>
+            <video ref={videoRef} className="w-full rounded-xl object-cover h-64 scale-x-[-1]" playsInline muted autoPlay />
+            <button onClick={capturePhoto} className="absolute bottom-4 left-1/2 -translate-x-1/2 p-3 bg-red-600 text-white rounded-full shadow-lg">
+              <Camera size={20} />
+            </button>
+          </div>
+          {!cameraActive && (
+            photoData ? (
+              <img src={photoData} className="max-h-64 rounded-xl shadow-md" alt="Capture" />
+            ) : (
+              <div className="text-center">
+                <Camera className="text-gray-300 mx-auto mb-3" size={48} />
+                <p className="text-xs text-gray-500 mb-4">Start camera or upload photo</p>
+                <button onClick={startCamera} className="px-4 py-2 bg-indigo-600 text-white rounded-xl text-xs font-bold">
+                  Start Camera
+                </button>
+              </div>
+            )
           )}
           <canvas className="hidden" />
         </div>
