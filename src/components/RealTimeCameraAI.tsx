@@ -64,7 +64,9 @@ export const RealTimeCameraAI: React.FC = () => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.error || 'Request failed');
       setFoodResult(data);
-    } catch (error) {
+    } catch (error: any) {
+      console.error(error);
+      alert('Food analysis failed: ' + (error?.message || 'Unknown error'));
       setFoodResult({ name: 'Avocado Toast', calories: 320, protein: 14, carbs: 28, fat: 16, confidence: 0.95 });
     }
     setLoading(false);
